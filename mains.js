@@ -1,21 +1,21 @@
 
-function add(){
-  return "+";
+function add(a, b){
+  return a + b
 }
 
-function subtract(){
-  return "-";
+function subtract(a, b){
+  return a - b;
 }
 
-function multiply(){
-  return "*";
+function multiply(a, b){
+  return a * b;
 }  
 
-function divide(){
-  return "/";
+function divide(a, b){
+  return a / b;
 }
 
-function operate(operator,a, b){
+function operate(a, operator, b){
   if (operator == "add"){
     return add(a,b);
   }if (operator == "subtract"){
@@ -33,51 +33,59 @@ document.body.querySelector("#pressed").value = storedValues;
 
 function startScreenZero(){
   if (storedValues.slice(0) == 0){
-    storedValues = storedValues.slice(0, storedValues.lenght - 1);
+    storedValues = storedValues.slice(0, storedValues.length - 1);
   }
 }
 function displayValue(){
   startScreenZero();
   storedValues += this.value;
   document.body.querySelector("#pressed").value = storedValues;
-  console.log(operationNumbers)
 }
 
 function operatorValue(){
-  operationNumbers.push(storedValues)
-  changeOperatorsOnClick();
-  if (this.value == "add"){
-    storedValues += add()
-  }else if (this.value == "multiply"){
-    storedValues += multiply()
-  }else if (this.value == "divide"){
-    storedValues += divide()
-  }else if (this.value == "subtract"){
-    storedValues += subtract()
-  } 
-  operationNumbers.push(this.value)
-  document.body.querySelector("#pressed").value = storedValues;
-  console.log(storedValues)
-}
+  let opRegex = /[\/\*\+\-]/;
+  let numberStack = storedValues.split(opRegex);
+  let lastItemInArray = numberStack.pop();
 
+  
+  if(lastItemInArray !== ''){ 
+    operationNumbers.push(lastItemInArray)
+  }
+  
+  calculate();
+  changeOperatorsOnClick();
+
+  if (this.value == "add"){ 
+    storedValues += "+";
+  } else if (this.value == "multiply"){
+    storedValues += "*"
+  } else if (this.value == "divide"){
+    storedValues += "/"
+  } else if (this.value == "subtract"){
+    storedValues += "-"
+  } 
+
+  operationNumbers.push(this.value);
+  document.body.querySelector("#pressed").value = storedValues;
+  
+}
+function calculate(){
+  if(operationNumbers.length == 3){
+    storedValues = operate(Number(operationNumbers[0]),operationNumbers[1],Number(operationNumbers[2])).toString();
+    operationNumbers = storedValues.split()
+  }
+console.log(operationNumbers.length)
+
+}
 function changeOperatorsOnClick(){
+  
   let lastItem = storedValues.slice(-1);
+  
   if(lastItem == "+" || lastItem == "-"|| lastItem == "*" || lastItem == "/"){
     storedValues = storedValues.slice(0, storedValues.length -1);
+    operationNumbers.pop()
   } 
 }
-
-function calculate(){
-  let array = storedValues.split('');
-  for(i = 0; i < array.length; i++){
-    if(array[i] == "+" || array[i] == "-" || array[i] == "*" || array[i] == "/"){
-      return array[i];
-        
-    }
-  }
-}
-
-
 
 let numberButtons = document.body.querySelectorAll(".numbers");
   for(var x=0; x < numberButtons.length; x++){ 
@@ -92,6 +100,7 @@ let operatorButtons = document.body.querySelectorAll(".operator");
   let keyButton = document.body.querySelectorAll(".equal");
     for(var j=0; j < keyButton.length; j++){
       keyButton[j].addEventListener("click",function(){
-        document.body.querySelector("#pressed").value = calculate(storedValues);
+        console.log(operationNumbers)
+        document.body.querySelector("#pressed").value = operate(Number(operationNumbers[0]),operationNumbers[1],Number(operationNumbers[2])).toString();
       })  
   } 
