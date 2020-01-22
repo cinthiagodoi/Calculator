@@ -28,7 +28,7 @@ function operate(operator,a, b){
 }
 
 let storedValues = "0";
-
+let operationNumbers = []
 document.body.querySelector("#pressed").value = storedValues;
 
 function startScreenZero(){
@@ -40,10 +40,11 @@ function displayValue(){
   startScreenZero();
   storedValues += this.value;
   document.body.querySelector("#pressed").value = storedValues;
-  console.log(storedValues)
+  console.log(operationNumbers)
 }
 
 function operatorValue(){
+  operationNumbers.push(storedValues)
   changeOperatorsOnClick();
   if (this.value == "add"){
     storedValues += add()
@@ -54,6 +55,7 @@ function operatorValue(){
   }else if (this.value == "subtract"){
     storedValues += subtract()
   } 
+  operationNumbers.push(this.value)
   document.body.querySelector("#pressed").value = storedValues;
   console.log(storedValues)
 }
@@ -66,8 +68,16 @@ function changeOperatorsOnClick(){
 }
 
 function calculate(){
-
+  let array = storedValues.split('');
+  for(i = 0; i < array.length; i++){
+    if(array[i] == "+" || array[i] == "-" || array[i] == "*" || array[i] == "/"){
+      return array[i];
+        
+    }
+  }
 }
+
+
 
 let numberButtons = document.body.querySelectorAll(".numbers");
   for(var x=0; x < numberButtons.length; x++){ 
