@@ -1,26 +1,21 @@
 
-function add(a, b){
-  return a + b;
+function add(){
+  return "+";
 }
 
-function subtract(a, b){
-  return a - b;
+function subtract(){
+  return "-";
 }
 
-function multiply(a, b){
-  return a * b;
+function multiply(){
+  return "*";
 }  
 
-function divide(a, b){
-  if(b == 0){
-    return document.body.querySelector("#pressed").value = "Error";
-  }else {
-    return a/b;
-  }
+function divide(){
+  return "/";
 }
 
 function operate(operator,a, b){
-  console.log("abacaxi");
   if (operator == "add"){
     return add(a,b);
   }if (operator == "subtract"){
@@ -32,27 +27,50 @@ function operate(operator,a, b){
   }
 }
 
-let displayNumbers = "";
-let firstNumber = "";
-let operatorSinal = "";
+let storedValues = "0";
 
+document.body.querySelector("#pressed").value = storedValues;
 
-function displayValue(){
-  let clickValue = this.value;
-  displayNumbers += clickValue;
-  document.body.querySelector("#pressed").value = displayNumbers;
-  console.log(displayNumbers)
+function startScreenZero(){
+  if (storedValues.slice(0) == 0){
+    storedValues = storedValues.slice(0, storedValues.lenght - 1);
+  }
 }
+function displayValue(){
+  startScreenZero();
+  storedValues += this.value;
+  document.body.querySelector("#pressed").value = storedValues;
+  console.log(storedValues)
+}
+
 function operatorValue(){
-  firstNumber += displayNumbers;
-  let operatorClick = this.value;
-  operatorSinal += operatorClick
-  displayNumbers= ""
-  console.log(operatorClick)
+  changeOperatorsOnClick();
+  if (this.value == "add"){
+    storedValues += add()
+  }else if (this.value == "multiply"){
+    storedValues += multiply()
+  }else if (this.value == "divide"){
+    storedValues += divide()
+  }else if (this.value == "subtract"){
+    storedValues += subtract()
+  } 
+  document.body.querySelector("#pressed").value = storedValues;
+  console.log(storedValues)
+}
+
+function changeOperatorsOnClick(){
+  let lastItem = storedValues.slice(-1);
+  if(lastItem == "+" || lastItem == "-"|| lastItem == "*" || lastItem == "/"){
+    storedValues = storedValues.slice(0, storedValues.length -1);
+  } 
+}
+
+function calculate(){
+
 }
 
 let numberButtons = document.body.querySelectorAll(".numbers");
-  for(var x=0; x < numberButtons.length; x++){
+  for(var x=0; x < numberButtons.length; x++){ 
     numberButtons[x].addEventListener("click", displayValue);
 }
 
@@ -64,7 +82,6 @@ let operatorButtons = document.body.querySelectorAll(".operator");
   let keyButton = document.body.querySelectorAll(".equal");
     for(var j=0; j < keyButton.length; j++){
       keyButton[j].addEventListener("click",function(){
-        document.body.querySelector("#pressed").value = (operate(operatorSinal, Number(firstNumber),Number(displayNumbers)))
-        console.log("aba")
-      });
+        document.body.querySelector("#pressed").value = calculate(storedValues);
+      })  
   } 
