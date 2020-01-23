@@ -12,7 +12,9 @@ function multiply(a, b){
 }  
 
 function divide(a, b){
-  return a / b;
+  if( b == "0"){
+    return "Hey! You can't do that";
+  }else return a / b;
 }
 
 function operate(a, operator, b){
@@ -43,15 +45,6 @@ function displayValue(){
 }
 
 function operatorValue(){
-  let opRegex = /[\/\*\+\-]/;
-  let numberStack = storedValues.split(opRegex);
-  let lastItemInArray = numberStack.pop();
-
-  
-  if(lastItemInArray !== ''){ 
-    operationNumbers.push(lastItemInArray)
-  }
-  
   calculate();
   changeOperatorsOnClick();
 
@@ -66,16 +59,25 @@ function operatorValue(){
   } 
 
   operationNumbers.push(this.value);
+  
   document.body.querySelector("#pressed").value = storedValues;
   
 }
 function calculate(){
+  let opRegex = /[\/\*\+\-]/;
+  let numberStack = storedValues.split(opRegex);
+  let lastItemInArray = numberStack.pop();
+  
+  if(lastItemInArray !== ''){ 
+    operationNumbers.push(lastItemInArray)
+  }
+  
   if(operationNumbers.length == 3){
     storedValues = operate(Number(operationNumbers[0]),operationNumbers[1],Number(operationNumbers[2])).toString();
-    operationNumbers = storedValues.split()
+    operationNumbers = storedValues.split();
+    console.log(operationNumbers)
   }
-console.log(operationNumbers.length)
-
+  return storedValues
 }
 function changeOperatorsOnClick(){
   
@@ -101,6 +103,6 @@ let operatorButtons = document.body.querySelectorAll(".operator");
     for(var j=0; j < keyButton.length; j++){
       keyButton[j].addEventListener("click",function(){
         console.log(operationNumbers)
-        document.body.querySelector("#pressed").value = operate(Number(operationNumbers[0]),operationNumbers[1],Number(operationNumbers[2])).toString();
+        document.body.querySelector("#pressed").value = calculate()
       })  
   } 
