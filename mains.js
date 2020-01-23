@@ -93,6 +93,13 @@ function changeOperatorsOnClick(){
   } 
 }
 
+function cleanScreen(){
+  storedValues = "0";
+  operationNumbers = [];
+  console.log(storedValues);
+  document.body.querySelector("#pressed").value = storedValues;
+}
+
 let numberButtons = document.body.querySelectorAll(".numbers");
 for(var x=0; x < numberButtons.length; x++){ 
   numberButtons[x].addEventListener("click", displayValue);
@@ -101,8 +108,12 @@ for(var x=0; x < numberButtons.length; x++){
 let operatorButtons = document.body.querySelectorAll(".operator");
 for(var i=0; i < operatorButtons.length; i++){
   operatorButtons[i].addEventListener("click",operatorValue);
-} 
-
+}
 document.body.querySelector(".equal").addEventListener("click",function(){
   document.body.querySelector("#pressed").value = calculate()
 })  
+
+let cleanButton = document.body.querySelectorAll(".clean");
+for(var h=0; h < cleanButton.length; h++){ 
+  cleanButton[h].addEventListener("click", cleanScreen)
+}
