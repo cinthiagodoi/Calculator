@@ -30,8 +30,7 @@ function operate(a, operator, b){
 }
 
 let storedValues = "0";
-let operationNumbers = []
-document.body.querySelector("#pressed").value = storedValues;
+let operationNumbers = [];
 
 function startScreenZero(){
   if (storedValues.slice(0) == 0){
@@ -45,8 +44,12 @@ function displayValue(){
 }
 
 function operatorValue(){
-  calculate();
   changeOperatorsOnClick();
+  calculate();
+
+  if(operationNumbers.length === 0){
+    operationNumbers.push(storedValues)
+  }
 
   if (this.value == "add"){ 
     storedValues += "+";
@@ -57,7 +60,7 @@ function operatorValue(){
   } else if (this.value == "subtract"){
     storedValues += "-"
   } 
-
+  
   operationNumbers.push(this.value);
   
   document.body.querySelector("#pressed").value = storedValues;
@@ -66,18 +69,19 @@ function operatorValue(){
 function calculate(){
   let opRegex = /[\/\*\+\-]/;
   let numberStack = storedValues.split(opRegex);
-  let lastItemInArray = numberStack.pop();
   
-  if(lastItemInArray !== ''){ 
-    operationNumbers.push(lastItemInArray)
+  if(storedValues.match(opRegex) !== null) {
+    let lastItemInArray = numberStack.pop();
+    if(lastItemInArray !== ''){ 
+      operationNumbers.push(lastItemInArray)
+    }
   }
   
   if(operationNumbers.length == 3){
     storedValues = operate(Number(operationNumbers[0]),operationNumbers[1],Number(operationNumbers[2])).toString();
-    operationNumbers = storedValues.split();
-    console.log(operationNumbers)
+    operationNumbers = [];
   }
-  return storedValues
+  return storedValues;
 }
 function changeOperatorsOnClick(){
   
@@ -90,19 +94,15 @@ function changeOperatorsOnClick(){
 }
 
 let numberButtons = document.body.querySelectorAll(".numbers");
-  for(var x=0; x < numberButtons.length; x++){ 
-    numberButtons[x].addEventListener("click", displayValue);
+for(var x=0; x < numberButtons.length; x++){ 
+  numberButtons[x].addEventListener("click", displayValue);
 }
 
 let operatorButtons = document.body.querySelectorAll(".operator");
-  for(var i=0; i < operatorButtons.length; i++){
-    operatorButtons[i].addEventListener("click",operatorValue);
-  } 
+for(var i=0; i < operatorButtons.length; i++){
+  operatorButtons[i].addEventListener("click",operatorValue);
+} 
 
-  let keyButton = document.body.querySelectorAll(".equal");
-    for(var j=0; j < keyButton.length; j++){
-      keyButton[j].addEventListener("click",function(){
-        console.log(operationNumbers)
-        document.body.querySelector("#pressed").value = calculate()
-      })  
-  } 
+document.body.querySelector(".equal").addEventListener("click",function(){
+  document.body.querySelector("#pressed").value = calculate()
+})  
