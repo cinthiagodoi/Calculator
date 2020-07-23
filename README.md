@@ -16,7 +16,7 @@ $ git clone git@github.com:cinthiagodoi/Calculator.git
 ```
 ## Built With
 
-* [JavasCript](https://www.javascript.com/)
+* [JavaScript](https://www.javascript.com/)
 * [HTML](https://html.com/)
 * [CSS](https://css-tricks.com/) 
 
