@@ -1,19 +1,19 @@
 let storedValues = "0";
 let operationNumbers = [];
 
-function add(a, b){return a + b}
+const add = (a, b) => a + b;
 
-function subtract(a, b){return a - b;}
+const subtract = (a, b) => a - b;
 
-function multiply(a, b){return a * b;}  
+const multiply = (a, b) => a * b;  
 
-function divide(a, b){
+const divide = (a, b) => {
   if( b == "0"){
     return "Hey! You can't do that";
   }else return a / b;
 }
 
-function operate(a, operator, b){
+const operate = (a, operator, b) =>{
   if (operator == "add"){
     return add(a,b);
   }if (operator == "subtract"){
@@ -25,25 +25,27 @@ function operate(a, operator, b){
   }
 }
 
-function startScreenZero(){
+const startScreenZero = () => {
   if (storedValues.slice(0) == 0){
     storedValues = storedValues.slice(0, storedValues.length - 1);
   }
 }
 
-function displayValue(){
+const displayValue = (event) => {
+  let clickedNumber = event.target.value
   startScreenZero();
-  storedValues += this.value;
+  storedValues += clickedNumber;
   document.body.querySelector("#pressed").value = storedValues;
 }
 
-function decimal(){
+const decimal = (event) => {
   if(!storedValues.includes(".")){
-    storedValues += this.value;  
+    storedValues += event.target.value;  
   } 
 }
 
-function operatorValue(){
+const operatorValue = (event) => {
+  let operator = event.target.value;
   changeOperatorsOnClick();
   calculate();
 
@@ -51,21 +53,22 @@ function operatorValue(){
     operationNumbers.push(storedValues)
   }
 
-  if (this.value == "add"){ 
+  if (operator == "add"){ 
     storedValues += "+";
-  } else if (this.value == "multiply"){
+  } else if (operator == "multiply"){
     storedValues += "*"
-  } else if (this.value == "divide"){
+  } else if (operator == "divide"){
     storedValues += "/"
-  } else if (this.value == "subtract"){
+  } else if (operator == "subtract"){
     storedValues += "-"
   } 
   
-  operationNumbers.push(this.value);
+  operationNumbers.push(operator);
   
   document.body.querySelector("#pressed").value = storedValues;
 }
-function changeOperatorsOnClick(){
+
+const changeOperatorsOnClick = () => {
   let lastItem = storedValues.slice(-1);
   
   if(lastItem == "+" || lastItem == "-"|| lastItem == "*" || lastItem == "/"){
@@ -74,20 +77,21 @@ function changeOperatorsOnClick(){
   } 
 }
 
-function cleanScreen(){
+const cleanScreen = () => {
   storedValues = "0";
   operationNumbers = [];
   document.body.querySelector("#pressed").value = storedValues;
 }
 
-function backspace(){
+const backspace = () => {
   if(storedValues.length != 0){
     storedValues = storedValues.slice(0, storedValues.length -1 )
     document.body.querySelector("#pressed").value = storedValues;
   }
 }
 
-function calculate(){
+const calculate = () => {
+  console.log(storedValues)
   let opRegex = /[\/\*\+\-]/;
   let numberStack = storedValues.split(opRegex);
   
